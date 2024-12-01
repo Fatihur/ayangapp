@@ -44,7 +44,7 @@ const excelStyles = {
       right: { style: "medium", color: { rgb: "1E40AF" } }
     }
   },
-  numberFormat: '#,##0.00',
+  numberFormat: '#,##0', // Removed decimal places since Rupiah typically doesn't use them
   alignment: {
     vertical: 'center',
     horizontal: 'center'
@@ -122,12 +122,8 @@ export const exportToExcel = (data: TableData[], title: string) => {
         desc.poh,
         desc.notaDate,
         desc.description,
-        desc.nominal,
-        index === 0 ? { 
-          f: `SUM(F${rowIndex}:F${rowIndex + descLength - 1})`,
-          t: 'n',
-          z: excelStyles.numberFormat
-        } : ''
+        { v: desc.nominal, t: 'n', z: excelStyles.numberFormat },
+        ''  // Empty total column
       ];
 
       XLSX.utils.sheet_add_aoa(ws, [row], { origin: `A${rowIndex}` });
@@ -138,7 +134,7 @@ export const exportToExcel = (data: TableData[], title: string) => {
         ws[cell].s = {
           border: excelStyles.borders.thin,
           alignment: {
-            ...excelStyles.alignment,
+            vertical: 'center',
             horizontal: col === 'E' ? 'left' : 
                        (col === 'F' || col === 'G') ? 'right' : 
                        'center'
@@ -154,16 +150,46 @@ export const exportToExcel = (data: TableData[], title: string) => {
       rowIndex++;
     });
 
-    // Merge cells for No and Name if multiple descriptions
-    if (descLength > 1) {
-      if (ws[`A${startRow}`].v) {
-        ws['!merges'] = ws['!merges'] || [];
-        ws['!merges'].push(
-          { s: { r: startRow - 1, c: 0 }, e: { r: startRow + descLength - 2, c: 0 } },
-          { s: { r: startRow - 1, c: 1 }, e: { r: startRow + descLength - 2, c: 1 } }
-        );
-      }
+    // Add subtotal row for the group
+    const subtotalRow = [
+      '', '', '', '', 'TOTAL =', '',
+      { f: `SUM(F${startRow}:F${rowIndex-1})`, t: 'n', z: excelStyles.numberFormat }
+    ];
+    XLSX.utils.sheet_add_aoa(ws, [subtotalRow], { origin: `A${rowIndex}` });
+
+    // Merge TOTAL = cells
+    ws['!merges'] = ws['!merges'] || [];
+    ws['!merges'].push(
+      { s: { r: rowIndex - 1, c: 4 }, e: { r: rowIndex - 1, c: 5 } }  // Merge E and F columns for TOTAL =
+    );
+
+    // If there's a number and name, merge until including the total row
+    if (ws[`A${startRow}`].v) {
+      ws['!merges'].push(
+        // Merge No column from start until including total row
+        { s: { r: startRow - 1, c: 0 }, e: { r: rowIndex - 1, c: 0 } },
+        // Merge Name column from start until including total row
+        { s: { r: startRow - 1, c: 1 }, e: { r: rowIndex - 1, c: 1 } }
+      );
     }
+
+    // Style subtotal row
+    ['A', 'B', 'C', 'D', 'E', 'F', 'G'].forEach(col => {
+      const cell = `${col}${rowIndex}`;
+      ws[cell].s = {
+        font: { bold: true, color: { rgb: "000000" } },
+        border: excelStyles.borders.thin,
+        alignment: {
+          vertical: 'center',
+          horizontal: col === 'G' ? 'right' : 'center'
+        }
+      };
+      if (col === 'G') {
+        ws[cell].z = excelStyles.numberFormat;
+      }
+    });
+
+    rowIndex++;
   });
 
   // Add grand total row
@@ -220,14 +246,14 @@ export const exportToPDF = (data: TableData[], title: string) => {
       desc.poh,
       desc.notaDate,
       desc.description,
-      desc.nominal.toLocaleString('id-ID', { minimumFractionDigits: 2 }),
-      index === 0 ? group.total.toLocaleString('id-ID', { minimumFractionDigits: 2 }) : ''
+      desc.nominal.toLocaleString('id-ID', { minimumFractionDigits: 0 }), // Removed decimal places
+      index === 0 ? group.total.toLocaleString('id-ID', { minimumFractionDigits: 0 }) : '' // Removed decimal places
     ]);
   });
 
   const grandTotal = groupedData.reduce((sum, group) => sum + group.total, 0);
   tableRows.push(['', '', '', '', 'Grand Total', '', 
-    grandTotal.toLocaleString('id-ID', { minimumFractionDigits: 2 })
+    grandTotal.toLocaleString('id-ID', { minimumFractionDigits: 0 }) // Removed decimal places
   ]);
 
   autoTable(doc, {
