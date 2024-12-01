@@ -24,20 +24,14 @@ export const DataTable: React.FC<DataTableProps> = ({ data, title }) => {
   return (
     <div className="space-y-4">
       <div className="bg-white rounded-xl shadow-lg p-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <div className="flex justify-between items-center mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-1">{title}</h2>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm text-gray-500">
-              <p>Total Perjalanan: {data.length}</p>
-              <span className="hidden sm:inline text-gray-300">|</span>
-              <p>Jumlah Orang: {Object.keys(groupedData).length}</p>
-              <span className="hidden sm:inline text-gray-300">|</span>
-              <p className="font-medium text-blue-600">
-                Grand Total: {grandTotal.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
-              </p>
-            </div>
+            <h2 className="text-2xl font-bold text-gray-800">{title || 'Data Dokumen'}</h2>
+            <p className="text-gray-600">
+              Total: <span className="font-semibold">{grandTotal.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</span>
+            </p>
           </div>
-          <ExportButtons data={data} title={title} />
+          <ExportButtons data={data} title={title || 'Data Dokumen'} />
         </div>
         
         <div className="overflow-auto max-h-[calc(100vh-280px)] rounded-lg border border-gray-200">
@@ -49,15 +43,17 @@ export const DataTable: React.FC<DataTableProps> = ({ data, title }) => {
                     <span>No</span>
                   </div>
                 </th>
-                <th className="group px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider bg-gray-50 shadow-sm">
-                  <div className="flex items-center space-x-1">
-                    <span>Nama</span>
-                  </div>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                  Nama
                 </th>
                 <th className="group px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider bg-gray-50 shadow-sm">POH</th>
                 <th className="group px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider bg-gray-50 shadow-sm">Tanggal Nota</th>
-                <th className="group px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider bg-gray-50 shadow-sm">Deskripsi</th>
-                <th className="group px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider bg-gray-50 shadow-sm">Nominal</th>
+                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
+                  Keterangan
+                </th>
+                <th className="px-4 py-3 text-right text-sm font-medium text-gray-500 uppercase tracking-wider">
+                  Nominal
+                </th>
                 <th className="group px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider bg-gray-50 shadow-sm">Total</th>
               </tr>
             </thead>

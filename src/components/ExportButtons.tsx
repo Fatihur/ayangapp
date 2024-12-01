@@ -52,7 +52,7 @@ export const ExportButtons: React.FC<ExportButtonsProps> = ({ data, title }) => 
         ) : (
           <FileSpreadsheet className="w-4 h-4" />
         )}
-        {isExportingExcel ? 'Exporting...' : 'Export Excel'}
+        {isExportingExcel ? 'Mengekspor...' : 'Ekspor Excel'}
       </button>
       <button
         onClick={handlePDFExport}
@@ -68,7 +68,7 @@ export const ExportButtons: React.FC<ExportButtonsProps> = ({ data, title }) => 
         ) : (
           <FileDown className="w-4 h-4" />
         )}
-        {isExportingPDF ? 'Exporting...' : 'Export PDF'}
+        {isExportingPDF ? 'Mengekspor...' : 'Ekspor PDF'}
       </button>
     </div>
   );
