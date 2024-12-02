@@ -198,7 +198,7 @@ function App() {
             className="fixed bottom-8 left-8 z-50 flex items-center gap-2 px-6 py-3 bg-indigo-600/90 backdrop-blur-sm hover:bg-indigo-700 text-white rounded-xl font-medium shadow-lg transition-all"
           >
             <HelpCircle className="w-5 h-5" />
-            <span>Bantuan</span>
+            <span>Baca ini dulu ya</span>
           </button>
 
           {/* Help Modal */}
