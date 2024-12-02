@@ -12,7 +12,7 @@ export const extractAmount = (text: string): number => {
 };
 
 export const isDescription = (text: string): boolean => {
-  const keywords = ['by', 'perjalanan', 'tiket', 'info', 'reaschedule', 'travel', 'penginapan'];
+  const keywords = ['by', 'perjalanan', 'tiket', 'info', 'reaschedule', 'travel', 'penginapan','rumah'];
   return keywords.some(keyword => text.toLowerCase().includes(keyword));
 };
 
