@@ -12,7 +12,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onAuth }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Jawaban yang benar: 17 Februari 2024
-    if (answer.toLowerCase() === '6 september 2021') {
+    if (answer.toLowerCase() === '6 November 2021') {
       onAuth(true);
       localStorage.setItem('isAuthenticated', 'true');
     } else {
