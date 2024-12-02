@@ -11,8 +11,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onAuth }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Jawaban yang benar: 17 Februari 2024
-    if (answer.toLowerCase() === '6 November 2021') {
+    
+    // Normalize the input by removing case sensitivity and extra spaces
+    const normalizedAnswer = answer.toLowerCase().trim();
+    const validAnswers = [
+      '6 november 2021',
+      '6 nov 2021',
+      '6nov2021',
+      '6/11/2021',
+      '06/11/2021',
+      '06 november 2021',
+      '06 nov 2021'
+    ];
+
+    if (validAnswers.includes(normalizedAnswer)) {
       onAuth(true);
       localStorage.setItem('isAuthenticated', 'true');
     } else {
@@ -42,7 +54,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onAuth }) => {
                 setAnswer(e.target.value);
                 setError(false);
               }}
-              placeholder="contoh: 1 Januari 2024"
+              placeholder="contoh: 8 Agustus 2024 atau 8/8/2024"
               className={`w-full px-4 py-3 rounded-xl border ${
                 error ? 'border-red-500' : 'border-gray-300'
               } focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors`}
