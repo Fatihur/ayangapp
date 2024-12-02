@@ -203,8 +203,8 @@ function App() {
 
           {/* Help Modal */}
           {showHelp && (
-            <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
-              <div className="bg-white/90 backdrop-blur-md rounded-2xl p-8 max-w-2xl w-full mx-4 relative">
+            <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+              <div className="bg-white/90 backdrop-blur-md rounded-2xl p-8 max-w-2xl w-full mx-4 relative max-h-[90vh] flex flex-col">
                 <button
                   onClick={() => setShowHelp(false)}
                   className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -215,11 +215,30 @@ function App() {
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">Halo ayang 💕</h2>
                 <p className="text-gray-600 mb-6">Begini cara pakenya ya:</p>
                 
-                <div className="space-y-8">
+                <div className="space-y-8 overflow-y-auto flex-1 pr-2">
                   <div>
                     <h3 className="text-lg font-semibold text-indigo-600 mb-3">Cara Upload dan Lihat Data</h3>
                     <ol className="list-decimal ml-6 space-y-2 text-gray-600">
                       <li>Upload file word nya (yang udah di kasi keterangan yaa)</li>
+                      <li className="relative">
+                        <p>Pastikan didalam file wordnya tidak ada :</p>
+                        <div className="mt-2 mb-4">
+                          <img 
+                            src="/tabel.png" 
+                            alt="Contoh format dokumen" 
+                            className="max-w-md rounded-lg shadow-md border border-gray-200"
+                          />
+                          <p className="text-sm text-gray-500 mt-2">*Tabel Seperti ini</p>
+                        </div>
+                        <div className="mt-2 mb-4">
+                          <img 
+                            src="/nama.png" 
+                            alt="Contoh format dokumen" 
+                            className="max-w-md rounded-lg shadow-md border border-gray-200"
+                          />
+                          <p className="text-sm text-gray-500 mt-2">*Nama yang sama, hapus yang bawah</p>
+                        </div>
+                      </li>
                       <li>Tunggu...</li>
                       <li>Datanya terload</li>
                       <li>Tinggal export deh, bisa ke excel atau pdf</li>
